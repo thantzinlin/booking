@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.tzl.booking.utils.ApiResponse;
+import com.tzl.booking.utils.CustomApiResponse;
 import com.tzl.booking.utils.ResponseConstants;
 
 import org.springframework.validation.BindException;
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleException(Exception e) {
         logger.error("Unhandled exception occurred", e);
 
-        ApiResponse<String> response = new ApiResponse<>(
+        CustomApiResponse<String> response = new CustomApiResponse<>(
                 ResponseConstants.ERROR_CODE,
                 ResponseConstants.ERROR_MESSAGE,
                 e.getMessage());
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
         logger.error("Bad credentials exception", e);
 
-        ApiResponse<String> response = new ApiResponse<>(
+        CustomApiResponse<String> response = new CustomApiResponse<>(
                 ResponseConstants.UNAUTHORIZED_ERROR_CODE,
                 ResponseConstants.UNAUTHORIZED_ERROR_MESSAGE,
                 e.getMessage());
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         logger.error("Data integrity violation", e);
 
-        ApiResponse<String> response = new ApiResponse<>(
+        CustomApiResponse<String> response = new CustomApiResponse<>(
                 ResponseConstants.BAD_REQUEST_ERROR_CODE,
                 ResponseConstants.BAD_REQUEST_ERROR_MESSAGE,
                 // e.getMessage(),
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
         String errorMessage = e.getBindingResult().getFieldError().getDefaultMessage();
         logger.error("Validation error: {}", errorMessage, e);
 
-        ApiResponse<String> response = new ApiResponse<>(
+        CustomApiResponse<String> response = new CustomApiResponse<>(
                 ResponseConstants.BAD_REQUEST_ERROR_CODE,
                 // ResponseConstants.BAD_REQUEST_ERROR_MESSAGE,
                 errorMessage,
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleBindException(BindException e) {
         String errorMessage = e.getBindingResult().getFieldError().getDefaultMessage();
         logger.error("Bind exception: {}", errorMessage, e);
-        ApiResponse<String> response = new ApiResponse<>(
+        CustomApiResponse<String> response = new CustomApiResponse<>(
                 ResponseConstants.BAD_REQUEST_ERROR_CODE,
                 ResponseConstants.BINDING_ERROR_MESSAGE,
                 errorMessage);
@@ -81,9 +81,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse<String>> handleResourceNotFound(ResourceNotFoundException e) {
+    public ResponseEntity<CustomApiResponse<String>> handleResourceNotFound(ResourceNotFoundException e) {
         logger.error("Resource not found", e);
-        ApiResponse<String> response = new ApiResponse<>(
+        CustomApiResponse<String> response = new CustomApiResponse<>(
                 ResponseConstants.NOT_FOUND_CODE,
                 ResponseConstants.NOT_FOUND_MESSAGE,
                 e.getMessage());
@@ -91,8 +91,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiResponse<String>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        ApiResponse<String> response = ApiResponse.<String>builder()
+    public ResponseEntity<CustomApiResponse<String>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        CustomApiResponse<String> response = CustomApiResponse.<String>builder()
                 .returnCode(ResponseConstants.BAD_REQUEST_ERROR_CODE)
                 .returnMessage(ResponseConstants.BAD_REQUEST_ERROR_MESSAGE)
                 .data(ex.getMessage())
@@ -101,8 +101,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BusinessRuleException.class)
-    public ResponseEntity<ApiResponse<String>> handleBusinessRuleException(BusinessRuleException ex) {
-        ApiResponse<String> response = ApiResponse.<String>builder()
+    public ResponseEntity<CustomApiResponse<String>> handleBusinessRuleException(BusinessRuleException ex) {
+        CustomApiResponse<String> response = CustomApiResponse.<String>builder()
                 .returnCode(ResponseConstants.BAD_REQUEST_ERROR_CODE)
                 .returnMessage(ResponseConstants.BAD_REQUEST_ERROR_MESSAGE)
                 .data(ex.getMessage())

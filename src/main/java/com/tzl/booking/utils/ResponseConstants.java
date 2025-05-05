@@ -6,7 +6,7 @@ public class ResponseConstants {
 
     // Error Responses
     public static final String ERROR_CODE = "500";
-    public static final String ERROR_MESSAGE = "An unexpected error occurred.";
+    public static final String ERROR_MESSAGE = "Internal server error.";
 
     // Unauthorized Access
     public static final String UNAUTHORIZED_ERROR_CODE = "401";

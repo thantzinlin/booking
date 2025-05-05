@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 @ToString
-public class ApiResponse<T> {
+public class CustomApiResponse<T> {
     @Builder.Default
     private String returnCode = "200";
     @Builder.Default

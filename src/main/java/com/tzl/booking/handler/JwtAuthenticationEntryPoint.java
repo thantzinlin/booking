@@ -1,7 +1,7 @@
 package com.tzl.booking.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tzl.booking.utils.ApiResponse;
+import com.tzl.booking.utils.CustomApiResponse;
 import com.tzl.booking.utils.ResponseConstants;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        ApiResponse<String> responseBody = ApiResponse.<String>builder()
+        CustomApiResponse<String> responseBody = CustomApiResponse.<String>builder()
                 .returnCode(ResponseConstants.UNAUTHORIZED_ERROR_CODE)
                 .returnMessage(ResponseConstants.UNAUTHORIZED_ERROR_MESSAGE)
                 .build();
