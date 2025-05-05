@@ -1,0 +1,624 @@
+{
+	"info": {
+		"_postman_id": "6298481b-defd-4c64-a1cf-4c953ff11266",
+		"name": "booking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10103105"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Thant Zin Lin\",\r\n    \"email\": \"thantzinlin1995@gmail.com\",\r\n    \"password\": \"User@1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.188.98.25:8080/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"172",
+								"188",
+								"98",
+								"25"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.188.98.25:8080/api/auth/verify?token=00217e9c-27a9-4bd9-8594-1a0dc6587176",
+							"protocol": "http",
+							"host": [
+								"172",
+								"188",
+								"98",
+								"25"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "00217e9c-27a9-4bd9-8594-1a0dc6587176"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"thantzinlin1995@gmail.com\",\r\n    \"password\": \"User@1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://172.188.98.25:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"172",
+								"188",
+								"98",
+								"25"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"thantzinlin1995@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/forgot-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/reset-password?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM1MTg2LCJleHAiOjE3NTM1MzUxODZ9.zDitjuCyo5KewQheKhRYwMobMIMyGjISXNp7skqaa1o",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM1MTg2LCJleHAiOjE3NTM1MzUxODZ9.zDitjuCyo5KewQheKhRYwMobMIMyGjISXNp7skqaa1o"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change-password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"AiA!-#dT90(4\",\r\n    \"newPassword\": \"User@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/change-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getprofile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2Mzg3MjgzLCJleHAiOjE3NTM1ODcyODN9.u_XAbDfu0NYbTwhMD9SsUsO67o893u9DBLu9nutiVrc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "package",
+			"item": [
+				{
+					"name": "avaliable-package",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://172.188.98.25:8080/api/packages/available?country=Myanmar",
+							"protocol": "http",
+							"host": [
+								"172",
+								"188",
+								"98",
+								"25"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"packages",
+								"available"
+							],
+							"query": [
+								{
+									"key": "country",
+									"value": "Myanmar"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my-packages",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/packages/my-packages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"packages",
+								"my-packages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "purchase-package",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"packageId\": 6,\r\n  \"amount\": 40000.00,\r\n  \"cardNumber\": \"411115645999811\",\r\n  \"cardHolder\": \"Thant Zin Lin\",\r\n  \"expiryDate\": \"12/26\",\r\n  \"paymentMethod\": \"CreditCard\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/packages/purchase",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"packages",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "booking",
+			"item": [
+				{
+					"name": "getClassSchedule",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/bookings/class-schedules?country=Myanmar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bookings",
+								"class-schedules"
+							],
+							"query": [
+								{
+									"key": "country",
+									"value": "Myanmar"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check-in",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/bookings/check-in?&bookingId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bookings",
+								"check-in"
+							],
+							"query": [
+								{
+									"key": null,
+									"value": null
+								},
+								{
+									"key": "bookingId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "book-class",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"classScheduleId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/bookings/book",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bookings",
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"bookingId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/bookings/cancel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bookings",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-waitlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aGFudHppbmxpbjE5OTVAZ21haWwuY29tIiwiaWF0IjoxNzQ2MzM2MjcyLCJleHAiOjE3NTM1MzYyNzJ9.ChzHMVwQA6TzjBzXBgvOnDqQNYo8w1AuaQ0Aj0pwJG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"classScheduleId\": 11\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/bookings/waitlist",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"bookings",
+								"waitlist"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
