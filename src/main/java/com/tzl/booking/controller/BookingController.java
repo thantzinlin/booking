@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tzl.booking.dto.BookClassRequest;
+import com.tzl.booking.dto.CheckInRequest;
 import com.tzl.booking.entity.Booking;
 import com.tzl.booking.entity.ClassSchedule;
 import com.tzl.booking.service.BookingService;
@@ -47,11 +49,11 @@ public class BookingController {
 
         @PostMapping("/book")
         @Operation(summary = "Book a class", description = "Allows authenticated users to book a class", responses = {
-                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data."),
-                        @ApiResponse(responseCode = "404", description = "Data not found."),
-                        @ApiResponse(responseCode = "401", description = "Unauthorized access."),
-                        @ApiResponse(responseCode = "500", description = "Internal server error.")
+                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized access.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<Map<String, Object>>> bookClass(
                         @RequestBody BookClassRequest request,
@@ -72,15 +74,15 @@ public class BookingController {
 
         @PostMapping("/cancel")
         @Operation(summary = "Cancel a booking", description = "Allows users to cancel their existing booking", responses = {
-                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data."),
-                        @ApiResponse(responseCode = "404", description = "Data not found."),
-                        @ApiResponse(responseCode = "401", description = "Unauthorized access."),
-                        @ApiResponse(responseCode = "500", description = "Internal server error.")
+                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized access.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<String>> cancelBooking(
-                        @RequestBody BookClassRequest request,
-                        @Parameter(hidden = true) @AuthenticationPrincipal UserInfoDetails userDetails) {
+                        CheckInRequest request,
+                        @AuthenticationPrincipal UserInfoDetails userDetails) {
 
                 Long userId = userDetails.getUserId();
                 bookingService.cancelBooking(userId, request.getBookingId());
@@ -94,11 +96,11 @@ public class BookingController {
 
         @PostMapping("/waitlist")
         @Operation(summary = "Join waitlist", description = "Add user to waitlist when class is full", responses = {
-                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data."),
-                        @ApiResponse(responseCode = "404", description = "Data not found."),
-                        @ApiResponse(responseCode = "401", description = "Unauthorized access."),
-                        @ApiResponse(responseCode = "500", description = "Internal server error.")
+                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized access.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<String>> addToWaitlist(
                         @RequestBody BookClassRequest request,
@@ -114,22 +116,20 @@ public class BookingController {
                 return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
-        @PutMapping("/check-in")
-        @Operation(summary = "Check-in for class", description = "Mark attendance for a booked class", parameters = {
-                        @Parameter(name = "bookingId", description = "ID of the booking to check-in", required = true, in = ParameterIn.QUERY, schema = @Schema(type = "long"))
-        }, responses = {
-                        @ApiResponse(responseCode = "200", description = "Successfully checked in.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data."),
-                        @ApiResponse(responseCode = "404", description = "Data not found."),
-                        @ApiResponse(responseCode = "401", description = "Unauthorized access."),
-                        @ApiResponse(responseCode = "500", description = "Internal server error.")
+        @PostMapping("/check-in")
+        @Operation(summary = "Check-in for class", description = "Mark attendance for a booked class", responses = {
+
+                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized access.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<String>> checkIn(
-                        @RequestParam Long bookingId,
-                        @Parameter(hidden = true) @AuthenticationPrincipal UserInfoDetails userDetails) {
+                        CheckInRequest request, @AuthenticationPrincipal UserInfoDetails userDetails) {
 
                 Long userId = userDetails.getUserId();
-                bookingService.checkIn(bookingId, userId);
+                bookingService.checkIn(request.getBookingId(), userId);
 
                 CustomApiResponse<String> response = CustomApiResponse.<String>builder()
                                 .data("Successfully checked in.")
@@ -143,11 +143,11 @@ public class BookingController {
                         @Parameter(name = "country", description = "Filter classes by country name (e.g.,'Myanmar')", in = ParameterIn.QUERY, required = false, example = "Myanmar")
         })
         @ApiResponses({
-                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data."),
-                        @ApiResponse(responseCode = "404", description = "Data not found."),
-                        @ApiResponse(responseCode = "401", description = "Unauthorized access."),
-                        @ApiResponse(responseCode = "500", description = "Internal server error.")
+                        @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized access.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+                        @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<List<ClassSchedule>>> getAvailableClassSchedules(
                         @RequestParam(required = false) String country) {

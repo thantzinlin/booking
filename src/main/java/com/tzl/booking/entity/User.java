@@ -34,6 +34,9 @@ public class User {
     @Column(name = "email", nullable = false, length = 50, unique = true)
     @Email(message = "Invalid email format")
     private String email;
+
+    private String phoneNumber;
+    private String address;
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 

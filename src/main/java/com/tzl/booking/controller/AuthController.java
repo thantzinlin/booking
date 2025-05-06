@@ -2,6 +2,8 @@ package com.tzl.booking.controller;
 
 import com.tzl.booking.dto.AuthRequest;
 import com.tzl.booking.dto.ChangePasswordRequest;
+import com.tzl.booking.dto.ForgotPasswordRequest;
+import com.tzl.booking.dto.LoginRequest;
 import com.tzl.booking.dto.UserProfileDto;
 import com.tzl.booking.entity.User;
 import com.tzl.booking.service.EmailService;
@@ -11,8 +13,11 @@ import com.tzl.booking.utils.CustomApiResponse;
 import com.tzl.booking.utils.ResponseConstants;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.security.core.Authentication;
 
@@ -48,13 +53,20 @@ public class AuthController {
     @PostMapping("/register")
     @Operation(summary = "Register new user", description = "Registers a new user in the system.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User registered successfully"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid input data")
+            @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
     })
-    public ResponseEntity<CustomApiResponse<Map<String, Object>>> addNewUser(@RequestBody @Valid User userInfo) {
+    public ResponseEntity<CustomApiResponse<Map<String, Object>>> addNewUser(@RequestBody @Valid AuthRequest request) {
         String token = UUID.randomUUID().toString();
+        User userInfo = new User();
         userInfo.setResetToken(token);
         userInfo.setIsVerified(false);
+        userInfo.setEmail(request.getEmail());
+        userInfo.setPassword(request.getPassword());
+        userInfo.setName(request.getUsername());
+        userInfo.setPhoneNumber(request.getPhoneNumber());
+        userInfo.setAddress(request.getAddress());
         service.addUser(userInfo);
 
         emailService.sendVerifyEmail(userInfo.getEmail(), token);
@@ -66,25 +78,19 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/verify")
-    public ResponseEntity<CustomApiResponse<String>> verifyUser(@RequestParam("token") String token) {
-        boolean result = service.verifyUser(token);
-        if (!result) {
-            throw new BadCredentialsException("Invalid or expired verification token");
-        }
-        CustomApiResponse<String> response = CustomApiResponse.<String>builder()
-                .data("User verified successfully").build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
-
-    }
-
     @PostMapping("/login")
+
     @Operation(summary = "Authenticate user", description = "Authenticates user and returns a JWT token.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Authentication successful"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Invalid credentials")
+            @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid Credential.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
     })
-    public ResponseEntity<CustomApiResponse<String>> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+
+    public ResponseEntity<CustomApiResponse<String>> authenticateAndGetToken(
+            @Valid @RequestBody LoginRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
 
@@ -102,16 +108,46 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/verify")
+    @Operation(summary = "Verify user", description = "Verifies the user using the provided token.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
+    })
+    public ResponseEntity<CustomApiResponse<String>> verifyUser(@RequestParam("token") String token) {
+        boolean result = service.verifyUser(token);
+        if (!result) {
+            throw new BadCredentialsException("Invalid or expired verification token");
+        }
+        CustomApiResponse<String> response = CustomApiResponse.<String>builder()
+                .data("User verified successfully").build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
     @PostMapping("/forgot-password")
     @Operation(summary = "Forgot password", description = "Triggers forgot password logic (e.g. email or SMS reset code).")
-    public ResponseEntity<CustomApiResponse<String>> forgotPassword(@RequestBody AuthRequest request) {
-        service.forgotPassword(request);
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
+    })
+    public ResponseEntity<CustomApiResponse<String>> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        service.forgotPassword(request.getEmail());
         CustomApiResponse<String> response = CustomApiResponse.<String>builder().build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/reset-password")
     @Operation(summary = "Reset password", description = "Allows users to reset their password.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
+    })
     public ResponseEntity<CustomApiResponse<String>> resetPassword(@RequestParam("token") String token) {
         service.resetPassword(token);
         CustomApiResponse<String> response = CustomApiResponse.<String>builder().build();
@@ -121,9 +157,11 @@ public class AuthController {
     @PostMapping("/change-password")
     @Operation(summary = "Change password", description = "Allows users to change their password.")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Password changed successfully"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid input or current password is incorrect"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Unauthorized access")
+            @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
     })
     public ResponseEntity<CustomApiResponse<String>> changePassword(
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest, Authentication authentication) {
@@ -150,6 +188,14 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
+    @Operation(summary = "Get User Profile", description = "Allows to get user profile data.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Data not found.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
+    })
     public ResponseEntity<CustomApiResponse<UserProfileDto>> getProfile(Authentication authentication) {
         String email = authentication.getName();
         User user = service.findByEmail(email);
