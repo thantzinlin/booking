@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class BookClassRequest {
+public class CheckInRequest {
     @NotBlank(message = "Class schedule ID is required")
-    private Long classScheduleId;
+    private Long bookingId;
 
 }

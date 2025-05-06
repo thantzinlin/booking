@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
         User existingUser = repository.findByResetToken(token)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid or expired verification token"));
         existingUser.setIsVerified(true);
-        existingUser.setResetToken("");
+        // existingUser.setResetToken("");
         repository.save(existingUser);
         return true;
     }
@@ -65,8 +65,8 @@ public class UserService implements UserDetailsService {
         repository.save(user);
     }
 
-    public void forgotPassword(AuthRequest request) {
-        User user = repository.findByEmail(request.getEmail())
+    public void forgotPassword(String email) {
+        User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         String token = jwtService.generateResetToken(user.getEmail());
