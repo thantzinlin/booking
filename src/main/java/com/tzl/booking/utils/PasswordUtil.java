@@ -52,8 +52,8 @@ public class PasswordUtil {
         return new String(array);
     }
 
-    public static void main(String[] args) {
-        String randomPassword = generateRandomPassword();
-        System.out.println("Generated Password: " + randomPassword);
-    }
+    // public static void main(String[] args) {
+    // String randomPassword = generateRandomPassword();
+    // System.out.println("Generated Password: " + randomPassword);
+    // }
 }

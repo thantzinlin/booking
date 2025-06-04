@@ -81,7 +81,7 @@ public class BookingController {
                         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<String>> cancelBooking(
-                        CheckInRequest request,
+                        @RequestBody CheckInRequest request,
                         @AuthenticationPrincipal UserInfoDetails userDetails) {
 
                 Long userId = userDetails.getUserId();
@@ -126,7 +126,7 @@ public class BookingController {
                         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<String>> checkIn(
-                        CheckInRequest request, @AuthenticationPrincipal UserInfoDetails userDetails) {
+                        @RequestBody CheckInRequest request, @AuthenticationPrincipal UserInfoDetails userDetails) {
 
                 Long userId = userDetails.getUserId();
                 bookingService.checkIn(request.getBookingId(), userId);

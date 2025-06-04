@@ -45,9 +45,9 @@ public class PackService {
     public List<PackageResponse> getAvailablePackagesByCountry(String country, String email) throws Exception {
         User user = userInfoRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        if (country == null || country.isEmpty()) {
-            throw new IllegalArgumentException("Country cannot be null or empty");
-        }
+        // if (country == null || country.isEmpty()) {
+        // throw new IllegalArgumentException("Country cannot be null or empty");
+        // }
         List<PackageResponse> availablePacks = customPackageRepository.getAvailablePackagesForUser(user.getId(),
                 country);
 
@@ -87,11 +87,17 @@ public class PackService {
                 .build();
     }
 
+    // private PackageStatus calculatePackageStatus(UserPackage userPackage) {
+    // if (userPackage.getRemainingCredit() <= 0) {
+    // return PackageStatus.EXPIRED;
+    // }
+    // return userPackage.getStatus();
+    // }
+
     private PackageStatus calculatePackageStatus(UserPackage userPackage) {
-        if (userPackage.getRemainingCredit() <= 0) {
-            return PackageStatus.EXPIRED;
-        }
-        return userPackage.getStatus();
+        return userPackage.getPkg().getExpiryDate().isBefore(LocalDateTime.now())
+                ? PackageStatus.EXPIRED
+                : PackageStatus.ACTIVE;
     }
 
     @Transactional

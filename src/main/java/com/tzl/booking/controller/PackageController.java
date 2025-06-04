@@ -45,7 +45,6 @@ public class PackageController {
         public ResponseEntity<CustomApiResponse<List<PackageResponse>>> getAvailablePackagesByCountry(
                         @RequestParam String country,
                         @Parameter(hidden = true) Authentication authentication) throws Exception {
-                // Existing implementation remains unchanged
                 String email = authentication.getName();
                 List<PackageResponse> packages = packageService.getAvailablePackagesByCountry(country, email);
                 CustomApiResponse<List<PackageResponse>> response = CustomApiResponse.<List<PackageResponse>>builder()
@@ -64,7 +63,6 @@ public class PackageController {
         })
         public ResponseEntity<CustomApiResponse<List<UserPackageResponse>>> getMyPackage(
                         @Parameter(hidden = true) Authentication authentication) {
-                // Existing implementation remains unchanged
                 String email = authentication.getName();
                 List<UserPackageResponse> data = packageService.getMyPackage(email);
 
@@ -86,7 +84,6 @@ public class PackageController {
         public ResponseEntity<CustomApiResponse<String>> purchase(
                         @RequestBody PurchaseInfoRequest purchaseInfoRequest,
                         @Parameter(hidden = true) Authentication authentication) {
-                // Existing implementation remains unchanged
                 String email = authentication.getName();
                 packageService.purchasePackage(email, purchaseInfoRequest);
                 CustomApiResponse<String> response = CustomApiResponse.<String>builder()

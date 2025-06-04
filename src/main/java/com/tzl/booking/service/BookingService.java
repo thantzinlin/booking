@@ -101,6 +101,9 @@ public class BookingService {
         if (booking.getStatus() != BookingStatus.BOOKED) {
             throw new BusinessRuleException("Only booked classes can be cancelled");
         }
+        if (booking.isCheckedIn()) {
+            throw new BusinessRuleException("You cannot cancel a class after checking in");
+        }
         UserPackage userPackage = booking.getUserPackage();
 
         if (LocalDateTime.now().isBefore(classSchedule.getStartTime().minusHours(4))) {
