@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService {
         repository.save(user);
     }
 
-    public void forgotPassword(String email) {
+    public String forgotPassword(String email) {
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -77,6 +77,7 @@ public class UserService implements UserDetailsService {
         String resetLink = resetPasswordLink + "?token=" + token;
         emailService.sendEmail(user.getEmail(), "Password Reset Request",
                 "Click the link to reset your password: " + resetLink);
+        return token;
     }
 
     public void resetPassword(String token) {

@@ -19,18 +19,24 @@ public class CustomPackageRepository {
     private EntityManager entityManager;
 
     public List<PackageResponse> getAvailablePackagesForUser(Long userId, String countryparam) throws Exception {
-
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT id,name,credit,price,country,expiry_date FROM packages p ")
-                .append("WHERE p.country = :country AND p.is_active = true ")
+        sb.append("SELECT id, name, credit, price, country, expiry_date FROM packages p ")
+                .append("WHERE p.is_active = true ")
                 .append("AND NOT EXISTS ( ")
                 .append("  SELECT 1 FROM user_packages up ")
                 .append("  WHERE up.package_id = p.id AND up.user_id = :userId ")
                 .append(")");
 
+        if (countryparam != null && !countryparam.trim().isEmpty()) {
+            sb.append(" AND p.country = :country ");
+        }
+
         Query query = entityManager.createNativeQuery(sb.toString());
         query.setParameter("userId", userId);
-        query.setParameter("country", countryparam);
+
+        if (countryparam != null && !countryparam.trim().isEmpty()) {
+            query.setParameter("country", countryparam);
+        }
 
         List<Object[]> rawResults = query.getResultList();
 
@@ -43,12 +49,10 @@ public class CustomPackageRepository {
             String country = (String) row[4];
             Date expiryDate = (Date) row[5];
 
-            PackageResponse dto = new PackageResponse(id, name, credit, price, country, expiryDate);
-            results.add(dto);
+            results.add(new PackageResponse(id, name, credit, price, country, expiryDate));
         }
 
         return results;
-
     }
 
 }
