@@ -4,7 +4,6 @@ package com.tzl.booking.job;
 import com.tzl.booking.entity.ClassSchedule;
 import com.tzl.booking.entity.UserPackage;
 import com.tzl.booking.entity.Waitlist;
-import com.tzl.booking.repository.ClassScheduleRepository;
 import com.tzl.booking.repository.UserPackageRepository;
 import com.tzl.booking.repository.WaitlistRepository;
 import org.quartz.Job;

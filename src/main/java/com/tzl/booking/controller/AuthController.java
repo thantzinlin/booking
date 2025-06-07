@@ -152,8 +152,9 @@ public class AuthController {
                         @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class)))
         })
         public ResponseEntity<CustomApiResponse<String>> resetPassword(@RequestParam("token") String token) {
-                service.resetPassword(token);
+                String newPassword = service.resetPassword(token);
                 CustomApiResponse<String> response = CustomApiResponse.<String>builder().build();
+                response.setData(newPassword);
                 return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
@@ -209,6 +210,8 @@ public class AuthController {
                                 user.getId(),
                                 user.getName(),
                                 user.getEmail(),
+                                user.getPhoneNumber(),
+                                user.getAddress(),
                                 user.getIsVerified());
 
                 CustomApiResponse<UserProfileDto> response = CustomApiResponse.<UserProfileDto>builder()

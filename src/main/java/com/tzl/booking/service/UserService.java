@@ -1,6 +1,5 @@
 package com.tzl.booking.service;
 
-import com.tzl.booking.dto.AuthRequest;
 import com.tzl.booking.entity.User;
 import com.tzl.booking.exception.ResourceNotFoundException;
 import com.tzl.booking.repository.UserInfoRepository;
@@ -80,7 +79,7 @@ public class UserService implements UserDetailsService {
         return token;
     }
 
-    public void resetPassword(String token) {
+    public String resetPassword(String token) {
         String email = jwtService.validateResetToken(token);
 
         User user = repository.findByEmail(email)
@@ -91,6 +90,7 @@ public class UserService implements UserDetailsService {
         user.setResetToken("");
         repository.save(user);
         emailService.sendNewPasswordEmail(user.getEmail(), newPassword);
+        return newPassword;
 
     }
 

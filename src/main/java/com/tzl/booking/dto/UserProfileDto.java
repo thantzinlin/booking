@@ -9,5 +9,7 @@ public class UserProfileDto {
     private Long id;
     private String name;
     private String email;
+    private String phoneNumber;
+    private String address;
     private Boolean isVerified;
 }

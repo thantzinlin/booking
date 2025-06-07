@@ -39,7 +39,7 @@ public class Pack {
     @Column(nullable = false)
     private boolean isActive = true;
 
-    private Date purchasedDate;
+    // private Date purchasedDate;
 
     @CreationTimestamp
     @Column(updatable = false)
