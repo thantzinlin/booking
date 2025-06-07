@@ -34,7 +34,7 @@ public class PackageController {
 
         @GetMapping("/available")
         @Operation(summary = "Get available packages by country", description = "Retrieve packages available for purchase in a specific country", parameters = {
-                        @Parameter(name = "country", description = "Country code to filter packages (e.g., 'Myanmar')", required = true, in = ParameterIn.QUERY, example = "Myanmar")
+                        @Parameter(name = "country", description = "Country code to filter packages (e.g., 'Myanmar')", in = ParameterIn.QUERY, example = "Myanmar")
         }, responses = {
                         @ApiResponse(responseCode = "200", description = "Request processed successfully", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),
                         @ApiResponse(responseCode = "400", description = "Bad request, invalid data.", content = @Content(schema = @Schema(implementation = CustomApiResponse.class))),

@@ -16,7 +16,7 @@ public interface UserPackageRepository extends JpaRepository<UserPackage, Long> 
         boolean existsByUserAndPkgId(User user, Long pkgId);
 
         @Query("SELECT up FROM UserPackage up " +
-                        "JOIN up.pkg p " + // Correct field name
+                        "JOIN up.pkg p " +
                         "WHERE up.user = :user " +
                         "AND p.country = :country " +
                         "AND up.status = 'ACTIVE' " +

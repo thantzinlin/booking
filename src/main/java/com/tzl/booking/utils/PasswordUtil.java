@@ -12,10 +12,8 @@ public class PasswordUtil {
 
     private static final String ALL_CHARACTERS = UPPER + LOWER + DIGITS + SPECIAL;
 
-    // Define the length of the password
-    private static final int PASSWORD_LENGTH = 12;
+    private static final int PASSWORD_LENGTH = 8;
 
-    // Method to generate a random password
     public static String generateRandomPassword() {
         SecureRandom random = new SecureRandom();
 

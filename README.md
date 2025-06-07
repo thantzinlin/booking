@@ -1,2 +1,36 @@
 # booking
-Booking project for code test assignment
+
+user ⇄ packages:
+Many-to-Many, linked by user_packages
+A user can purchase multiple packages; a package can be purchased by multiple users.
+
+user → booking:
+One-to-Many
+One user can make multiple bookings.
+
+class_schedule → booking:
+One-to-Many
+One class schedule can have many bookings.
+Each booking is for exactly one class.
+
+user_package → booking:
+One-to-Many
+Each booking uses one UserPackage.
+One UserPackage can be used across multiple bookings (until credits expire or run out).
+
+class_schedule → waitlist:
+One-to-Many
+A class can have many users in the waitlist.
+
+user → waitlist:
+One-to-Many
+A user can be on multiple waitlists for different classes.
+
+user_package → waitlist:
+One-to-Many
+A user joins a waitlist using a specific package (for credit reservation or future deduction).
+
+user_package → payment_info:
+One-to-Many
+Each payment record is linked to one user package.
+A user package can have multiple payments
