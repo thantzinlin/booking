@@ -68,7 +68,6 @@ public class ClassSchedule {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // Business logic methods
     public void incrementBookedCount() {
         if (this.bookedCount >= this.maxCapacity) {
             throw new IllegalStateException("Class is already at maximum capacity");
@@ -83,7 +82,6 @@ public class ClassSchedule {
         this.bookedCount--;
     }
 
-    // Validation method
     public void validateTiming() {
         if (endTime.isBefore(startTime) || endTime.isEqual(startTime)) {
             throw new IllegalArgumentException("End time must be after start time");
