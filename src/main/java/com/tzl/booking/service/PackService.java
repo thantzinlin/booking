@@ -45,9 +45,7 @@ public class PackService {
     public List<PackageResponse> getAvailablePackagesByCountry(String country, String email) throws Exception {
         User user = userInfoRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        // if (country == null || country.isEmpty()) {
-        // throw new IllegalArgumentException("Country cannot be null or empty");
-        // }
+
         List<PackageResponse> availablePacks = customPackageRepository.getAvailablePackagesForUser(user.getId(),
                 country);
 
